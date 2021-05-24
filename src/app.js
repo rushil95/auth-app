@@ -1,4 +1,5 @@
 import React from 'react'
+import Signup from './pages/signup'
 import Login from './pages/login'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
@@ -13,7 +14,10 @@ export default function App() {
         <GlobalStyles/>
         <Router>
           <Switch>
-            <Route exact path="/" render={() => <Login />}></Route>
+            <Route exact path="/" render={() => <Signup />}></Route>
+            <Route path="/signup">
+              <Signup />
+            </Route>
             <Route path="/login">
               <Login />
             </Route>

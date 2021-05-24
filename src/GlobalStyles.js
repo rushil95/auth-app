@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
 *{
@@ -13,9 +13,23 @@ html,body{
 
 body{
     background: ${(props) => {
-      return props.theme.colors.background
+      return props.theme.colors.background;
     }};
     color : ${({ theme }) => theme.colors.font};
-
+   
 }
-`
+
+body,input,textarea, button{
+    font-family : 'Noto Sans', sans-serif;
+    font-size : 16px;
+}
+
+a{
+    color : #2D9CDB;
+    cursor:pointer;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+`;
