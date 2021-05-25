@@ -3,7 +3,7 @@ import { space, layout, color } from "styled-system";
 import { IconContainer } from "../../components/shared/LoginIcon";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 475px;
     justify-content: center;
+    padding: 30px 0;
   }
 `;
 
@@ -59,7 +60,7 @@ const AccentButton = styled.button`
   ${color}
   ${space}
   ${layout}
-   background: ${({ theme }) => theme.colors.button};
+  background: ${({ theme }) => theme.colors.button};
   color: white;
   font-weight: 600;
   text-align: center;

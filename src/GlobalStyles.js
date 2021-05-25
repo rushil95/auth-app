@@ -32,4 +32,9 @@ a{
 a:hover{
     text-decoration: underline;
 }
+
+button:disabled{
+    opacity : 70%;
+    cursor: auto;
+}
 `;

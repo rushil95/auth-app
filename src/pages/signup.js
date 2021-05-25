@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "styled-components/macro";
 import LogoLight from "../assets/logo-light.svg";
 import LogoDark from "../assets/logo-dark.svg";
@@ -21,44 +21,78 @@ import {
   Logo,
   ErrorMsg,
 } from "../styled-components/signup";
+import LoadingAnimation from "react-loader-spinner";
+import firebase from "../firebase";
 
 export default function Signup() {
   const theme = useContext(ThemeContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState({ isError: false, msg: "" });
-  const [passError, setPassError] = useState({ isError: false, msg: "" });
-  const [error, setError] = useState(emailError.isError || passError.isError);
+  const [error, setError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
-    handleEmailValidation();
-    handlePasswordValidation();
+
+    const isError = handleEmailValidation() | handlePasswordValidation();
+    if (!isError) {
+      try {
+        const response = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+        console.log(response);
+      } catch (e) {
+        console.error(e);
+      }
+
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 4000);
+    }
   }
 
   function handleEmailValidation() {
     if (!validateEmail(email)) {
-      setEmailError({ isError: true, msg: "Please add a valid email" });
+      setError((prev) => ({
+        ...prev,
+        email: "Please add a valid email",
+      }));
+      return true;
     }
+    return false;
   }
 
   function handlePasswordValidation() {
     if (!validatePassword(password)) {
-      setPassError({ isError: true, msg: "Please add a valid password" });
+      console.log("Password error");
+      setError((prev) => ({
+        ...prev,
+        password: "Please add a valid password",
+      }));
+      return true;
     }
+    return false;
   }
 
   function clearEmailError() {
-    setEmailError({ isError: false, msg: "" });
+    setError((prev) => {
+      const copy = {
+        ...prev,
+      };
+      delete copy.email;
+      return copy;
+    });
   }
 
   function clearPassError() {
-    setPassError({ isError: false, msg: "" });
+    setError((prev) => {
+      const copy = {
+        ...prev,
+      };
+      delete copy.password;
+      return copy;
+    });
   }
 
   return (
@@ -81,9 +115,7 @@ export default function Signup() {
             }}
             onFocus={clearEmailError}
           />
-          {emailError.isError ? (
-            <ErrorMsg>Please add a valid email</ErrorMsg>
-          ) : null}
+          {error.email ? <ErrorMsg>Please add a valid email</ErrorMsg> : null}
 
           <Input
             type="password"
@@ -94,11 +126,18 @@ export default function Signup() {
             }}
             onFocus={clearPassError}
           />
-          {passError.isError && (
-            <ErrorMsg>Please add a valid password</ErrorMsg>
-          )}
-          <AccentButton mt={22} width="100%" onClick={handleSubmit}>
-            Start coding now
+          {error.password && <ErrorMsg>Please add a valid password</ErrorMsg>}
+          <AccentButton
+            mt={22}
+            width="100%"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <LoadingAnimation type="TailSpin" color="white" height={20} />
+            ) : (
+              "Start coding now"
+            )}
           </AccentButton>
         </Form>
         <TextOtherLogin mt={32}>
