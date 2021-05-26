@@ -6,22 +6,55 @@ import Input from "../components/shared/Input";
 import LoginIcon from "../components/shared/LoginIcon";
 import { FaGoogle } from "react-icons/fa";
 import { ImGithub } from "react-icons/im";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useFormik } from "formik";
+import { validateEmail } from "../utils/helpers";
 import {
   Wrapper,
   Card,
   Footer,
   Heading,
-  TextOne,
   Form,
   AccentButton,
   TextOtherLogin,
   OtherLoginContainer,
   Logo,
+  ErrorMsg,
 } from "../styled-components/signup";
+import { useAuth } from "../context/AuthProvider";
 
 export default function Login() {
+  const history = useHistory();
+  const auth = useAuth();
   const theme = useContext(ThemeContext);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: handleSubmit,
+    validate,
+  });
+
+  async function handleSubmit(values) {
+    await auth.login(values.email, values.password);
+    history.push("/");
+  }
+
+  function validate(values) {
+    let errors = {};
+
+    if (!values.email) {
+      errors.email = "Email required";
+    } else if (!validateEmail(values.email)) {
+      errors.email = "Invalid Email";
+    }
+
+    if (!values.password) {
+      errors.password = "Password Required";
+    }
+    return errors;
+  }
 
   return (
     <Wrapper>
@@ -29,16 +62,33 @@ export default function Login() {
         <Logo src={theme.id === "light" ? LogoLight : LogoDark} />
         <Heading>Login</Heading>
 
-        <Form mt={34}>
-          <Input type="email" placeholder="Email" />
-          <Input type="password" placeholder="Password" />
-          <AccentButton
-            mt={22}
-            width="100%"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
+        <Form mt={34} onSubmit={formik.handleSubmit}>
+          <Input
+            type="email"
+            placeholder="Email"
+            name="email"
+            id="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.email && formik.errors.email ? (
+            <ErrorMsg>{formik.errors.email}</ErrorMsg>
+          ) : null}
+          <Input
+            type="password"
+            placeholder="Password"
+            name="password"
+            id="password"
+            autocomplete="current-password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.password && formik.errors.password ? (
+            <ErrorMsg>{formik.errors.password}</ErrorMsg>
+          ) : null}
+          <AccentButton type="submit" mt={22} width="100%">
             Start coding now
           </AccentButton>
         </Form>

@@ -6,7 +6,7 @@ import Input from "../components/shared/Input";
 import LoginIcon from "../components/shared/LoginIcon";
 import { FaGoogle } from "react-icons/fa";
 import { ImGithub } from "react-icons/im";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { validateEmail, validatePassword } from "../utils/helpers";
 import {
   Wrapper,
@@ -30,6 +30,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -37,10 +38,8 @@ export default function Signup() {
     const isError = handleEmailValidation() | handlePasswordValidation();
     if (!isError) {
       try {
-        const response = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(email, password);
-        console.log(response);
+        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        history.push("/");
       } catch (e) {
         console.error(e);
       }
@@ -106,7 +105,8 @@ export default function Signup() {
         </TextOne>
         <Form mt={34}>
           <Input
-            key="email"
+            name="email"
+            id="email"
             type="email"
             placeholder="Email"
             value={email}
@@ -118,6 +118,9 @@ export default function Signup() {
           {error.email ? <ErrorMsg>Please add a valid email</ErrorMsg> : null}
 
           <Input
+            name="password"
+            id="password"
+            autocomplete="new-password"
             type="password"
             placeholder="Password"
             value={password}

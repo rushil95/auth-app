@@ -6,7 +6,7 @@ import WebFont from 'webfontloader'
 WebFont.load(
     {
         google : {
-            families : ['Noto Sans', 'sans-serif']
+            families : ['Noto Sans:300,400', 'sans-serif']
         } 
     }
 )

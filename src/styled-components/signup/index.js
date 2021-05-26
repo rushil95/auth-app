@@ -98,7 +98,9 @@ const ErrorMsg = styled.div`
   margin-left: 5px;
 `;
 
-const Logo = styled.img``;
+const Logo = styled.img`
+  height: 18px;
+`;
 
 export {
   Wrapper,
