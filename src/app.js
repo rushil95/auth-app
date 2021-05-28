@@ -8,6 +8,7 @@ import Profile from "./pages/profile";
 import AppThemeProvider from "./theme/ThemeProvider";
 import AuthProvider from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EditProfile from "./pages/edit";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
               <Route path="/login">
                 <Login />
               </Route>
+              <Route exact path="/edit" component={EditProfile}/>
             </Switch>
           </Router>
         </AuthProvider>

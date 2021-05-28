@@ -11,7 +11,6 @@ export const IconContainer = styled.div`
   color : #828282;
   font-size : 18px;
 
-
 `;
 
 export default function LoginIcon({icon : Icon}) {

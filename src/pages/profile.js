@@ -1,54 +1,72 @@
 import React from "react";
-import styled from "styled-components/macro";
-import { Logo } from "../styled-components/shared";
-import LogoLight from "../assets/logo-light.svg";
-import LogoDark from "../assets/logo-light.svg";
 import Avatar from "../assets/avatar.png";
+import Header from "../components/shared/Header";
+import {
+  Wrapper,
+  Heading,
+  TextBelowHeading,
+  ProfileCard,
+  RowTop,
+  LightGrayText,
+  RoundedGrayOutlineButton,
+  ProfilePic,
+  Row,
+  Value,
+} from "../styled-components/profile";
 
-const Wrapper = styled.div``;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 18px;
-  padding-top: 15px;
-`;
-
-const ProfilePic = styled.img`
-  border-radius: 8px;
-  height: 32px;
-  width: 32px;
-  cursor: pointer;
-`;
-
-const Heading = styled.h2`
-  font: 400 24px/33px "Noto Sans";
-  margin-top: 27px;
-  text-align: center;
-  color: black;
-`;
-
-const TextBelowHeading = styled.div`
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 19px;
-  margin-top: 7px;
-  text-align: center;
-`;
-
-
-const ProfileCard = styled.div ``
+import { DirtyWhiteBackground } from "../styled-components/shared";
 
 export default function Profile() {
   return (
-    <Wrapper>
-      <Header>
-        <Logo src={LogoLight} alt="devChallenges Logo" />
-        <ProfilePic src={Avatar} alt="Your picture" />
-      </Header>
-      <Heading>Personal Info</Heading>
-      <TextBelowHeading>Basic info, like your name and photo</TextBelowHeading>
-    </Wrapper>
+    <>
+      <DirtyWhiteBackground />
+      <Wrapper>
+        <Header />
+        <Heading mt={27} textAlign="center">
+          Personal Info
+        </Heading>
+        <TextBelowHeading>
+          Basic info, like your name and photo
+        </TextBelowHeading>
+        <ProfileCard>
+          <RowTop>
+            <div style={{ flexBasis: "55%" }}>
+              <Heading>Profile</Heading>
+              <LightGrayText>
+                Some info may be visible to other people
+              </LightGrayText>
+            </div>
+            <RoundedGrayOutlineButton to="/edit">
+              Edit
+            </RoundedGrayOutlineButton>
+          </RowTop>
+          <Row>
+            <LightGrayText textTransform="uppercase">Photo</LightGrayText>
+            <ProfilePic
+              src={Avatar}
+              alt="Your picture"
+              height={72}
+              width={72}
+            />
+          </Row>
+          <Row>
+            <LightGrayText textTransform="uppercase">Name</LightGrayText>
+            <Value>Xanthe Neal</Value>
+          </Row>
+          <Row>
+            <LightGrayText textTransform="uppercase">Bio</LightGrayText>
+            <Value>I am a sea lion. I want fish.</Value>
+          </Row>
+          <Row>
+            <LightGrayText textTransform="uppercase">Email</LightGrayText>
+            <Value>sealion@wateranimals.com</Value>
+          </Row>
+          <Row>
+            <LightGrayText textTransform="uppercase">Password</LightGrayText>
+            <Value>********</Value>
+          </Row>
+        </ProfileCard>
+      </Wrapper>
+    </>
   );
 }

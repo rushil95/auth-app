@@ -4,7 +4,8 @@ export default {
     id: 'light',
     name:'light',
     colors: {
-        background: 'white',
+        background: '#FFFFFF',
+        dirtyWhite: '#FAFAFB',
         font : '#333333',
         button : '#2F80ED'
     },
