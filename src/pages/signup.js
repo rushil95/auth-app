@@ -22,7 +22,7 @@ import {
   ErrorMsg,
 } from "../styled-components/signup";
 import LoadingAnimation from "react-loader-spinner";
-import firebase from "../firebase";
+import firebase, { db } from "../firebase";
 
 export default function Signup() {
   const theme = useContext(ThemeContext);
@@ -34,20 +34,29 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    const isError = handleEmailValidation() | handlePasswordValidation();
+    setIsLoading(true);
+    const isError = false;
+    //const isError = handleEmailValidation() | handlePasswordValidation();
     if (!isError) {
       try {
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const { user } = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+
+        db.collection("users")
+          .doc(user.uid)
+          .set({ email: user.email })
+          .then((ref) => {
+            console.log(ref);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
         history.push("/");
       } catch (e) {
         console.error(e);
       }
-
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 4000);
     }
   }
 

@@ -18,14 +18,15 @@ export default function App() {
         <AuthProvider>
           <Router>
             <Switch>
-              <Route exact path="/" component={Profile} />
+              <ProtectedRoute exact path="/" component={Profile} />
+              <ProtectedRoute exact path="/profile" component={Profile} />
               <Route path="/signup">
                 <Signup />
               </Route>
               <Route path="/login">
                 <Login />
               </Route>
-              <Route exact path="/edit" component={EditProfile}/>
+              <Route exact path="/edit" component={EditProfile} />
             </Switch>
           </Router>
         </AuthProvider>

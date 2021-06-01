@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ThemeContext } from "styled-components/macro";
 import LogoLight from "../assets/logo-light.svg";
 import LogoDark from "../assets/logo-dark.svg";
@@ -22,8 +22,10 @@ import {
   ErrorMsg,
 } from "../styled-components/signup";
 import { useAuth } from "../context/AuthProvider";
+import LoadingAnimation from "react-loader-spinner";
 
 export default function Login() {
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const auth = useAuth();
   const theme = useContext(ThemeContext);
@@ -37,7 +39,9 @@ export default function Login() {
   });
 
   async function handleSubmit(values) {
+    setIsLoading(true);
     await auth.login(values.email, values.password);
+    setIsLoading(false);
     history.push("/");
   }
 
@@ -89,7 +93,11 @@ export default function Login() {
             <ErrorMsg>{formik.errors.password}</ErrorMsg>
           ) : null}
           <AccentButton type="submit" mt={22} width="100%">
-            Start coding now
+            {isLoading ? (
+              <LoadingAnimation type="TailSpin" color="white" height={20} />
+            ) : (
+              "Start coding now"
+            )}
           </AccentButton>
         </Form>
         <TextOtherLogin mt={32}>

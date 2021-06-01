@@ -2,6 +2,7 @@ import styled from "styled-components/macro";
 import { color, space, layout, typography } from "styled-system";
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
+import { useAuth } from "../../context/AuthProvider";
 
 export const MenuCard = styled.div`
   background: #ffffff;
@@ -15,8 +16,8 @@ export const MenuCard = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   display: none;
 
-  &:hover{
-      display : inline-block;
+  &:hover {
+    display: inline-block;
   }
 `;
 
@@ -54,6 +55,8 @@ const MenuItemContainer = styled.div`
 `;
 
 export default function Menu() {
+  const auth = useAuth();
+
   return (
     <MenuCard>
       <MenuItemContainer>
@@ -64,7 +67,7 @@ export default function Menu() {
       </MenuItemContainer>
       <MenuItem color="#EB5757" mt={10}>
         <MenuItemIcon icon={IoLogOutOutline} />
-        <MenuItemText>Logout</MenuItemText>
+        <MenuItemText onClick={auth.logout}>Logout</MenuItemText>
       </MenuItem>
     </MenuCard>
   );

@@ -17,6 +17,10 @@ export default function AuthProvider(props) {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
+
   function handleAuthStateChanged(user) {
     setCurrentUser(user);
     setIsLoading(false);
@@ -30,8 +34,10 @@ export default function AuthProvider(props) {
     return auth.signInWithEmailAndPassword(email, password);
   };
 
-  const logout = () => {
-    auth.signOut();
+  const logout = async () => {
+    console.log("Signing out");
+    await auth.signOut();
+    console.log("Signed out");
   };
 
   return (
