@@ -14,14 +14,9 @@ export const validatePassword = (password) => {
   //Length check
   if (password.length < 7) result = false;
   //Check atlest one Uppercase
-  if (!/[A-Z]/.test(password)) result = false;
-  //Lowercase
-  if (!/[a-z]/.test(password)) result = false;
+  if (!(/[A-Z]/.test(password) || /[a-z]/.test(password))) result = false;
 
-  //   if (!/[0-9]/.test(password)) result = false;
-
-  //Special
-  if (!/[@#$%]/.test(password)) result = false;
+    if (!/[0-9]/.test(password)) result = false;
 
   return result;
 };

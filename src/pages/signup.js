@@ -34,10 +34,11 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsLoading(true);
-    const isError = false;
-    //const isError = handleEmailValidation() | handlePasswordValidation();
+
+    const isError = handleEmailValidation() | handlePasswordValidation();
+    console.log(isError);
     if (!isError) {
+      setIsLoading(true);
       try {
         const { user } = await firebase
           .auth()
@@ -55,8 +56,16 @@ export default function Signup() {
 
         history.push("/");
       } catch (e) {
-        console.error(e);
+        console.error(e.code);
+        setIsLoading(false);
+        if (e.code === "auth/email-already-in-use") {
+          setError((prev) => ({
+            ...prev,
+            email: "Account already exists. Try logging in ",
+          }));
+        }
       }
+      console.log("Create");
     }
   }
 
@@ -73,10 +82,10 @@ export default function Signup() {
 
   function handlePasswordValidation() {
     if (!validatePassword(password)) {
-      console.log("Password error");
       setError((prev) => ({
         ...prev,
-        password: "Please add a valid password",
+        password:
+          "Password should contain atleast 8 characters and include numbers and alphabets",
       }));
       return true;
     }
@@ -124,7 +133,7 @@ export default function Signup() {
             }}
             onFocus={clearEmailError}
           />
-          {error.email ? <ErrorMsg>Please add a valid email</ErrorMsg> : null}
+          {error.email ? <ErrorMsg>{error.email}</ErrorMsg> : null}
 
           <Input
             name="password"
@@ -138,7 +147,7 @@ export default function Signup() {
             }}
             onFocus={clearPassError}
           />
-          {error.password && <ErrorMsg>Please add a valid password</ErrorMsg>}
+          {error.password && <ErrorMsg>{error.password}</ErrorMsg>}
           <AccentButton
             mt={22}
             width="100%"

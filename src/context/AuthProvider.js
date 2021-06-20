@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import firebase from "../firebase";
+import { useHistory } from "react-router-dom";
 
 const auth = firebase.auth();
 const AuthContext = createContext();
@@ -9,6 +10,7 @@ export const useAuth = () => useContext(AuthContext);
 export default function AuthProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(handleAuthStateChanged);
@@ -16,10 +18,6 @@ export default function AuthProvider(props) {
       unsubscribe();
     };
   }, []);
-
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
 
   function handleAuthStateChanged(user) {
     setCurrentUser(user);
@@ -37,6 +35,7 @@ export default function AuthProvider(props) {
   const logout = async () => {
     console.log("Signing out");
     await auth.signOut();
+    console.log(history);
     console.log("Signed out");
   };
 

@@ -98,9 +98,8 @@ export const SaveButton = styled.button`
   padding: 8px 24px;
   border: none;
   color: white;
-  cursor : pointer;
+  cursor: pointer;
   ${space}
-
 `;
 
 export const BackButton = (props) => (
@@ -108,3 +107,8 @@ export const BackButton = (props) => (
     <FiChevronLeft style={{ marginRight: 4 }} /> Back
   </BackButtonContainer>
 );
+
+
+export const InvisibleFileInput = styled.input`
+  display: none;
+`;

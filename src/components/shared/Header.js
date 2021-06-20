@@ -7,14 +7,14 @@ import {
 } from "../../styled-components/header";
 import HeaderMenu from "../../styled-components/header-menu/index.js";
 import Logo from "./Logo";
-import Avatar from "../../assets/avatar.png";
 
-export default function Header() {
+export default function Header(props) {
+  const {profileImg} = props
   return (
     <HeaderContainer>
       <Logo/>
       <UserInfo>
-        <ProfilePic src={Avatar} alt="Your picture" />{" "}
+        <ProfilePic src={profileImg} alt="Your picture" />{" "}
         <UserName ml={15}>Xanthe Neal</UserName>
         <HeaderMenu />
       </UserInfo>

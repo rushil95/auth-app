@@ -9,28 +9,33 @@ import AppThemeProvider from "./theme/ThemeProvider";
 import AuthProvider from "./context/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EditProfile from "./pages/edit";
+import UserDataProvider from "./context/UserDataProvider";
 
 export default function App() {
+  console.log("hi");
+  console.log(process.env.REACT_APP_CLIENT_ID);
   return (
     <>
-      <AppThemeProvider>
-        <GlobalStyles />
-        <AuthProvider>
-          <Router>
+      <Router>
+        <AppThemeProvider>
+          <GlobalStyles />
+          <AuthProvider>
             <Switch>
-              <ProtectedRoute exact path="/" component={Profile} />
-              <ProtectedRoute exact path="/profile" component={Profile} />
-              <Route path="/signup">
+              <Route exact path="/signup">
                 <Signup />
               </Route>
-              <Route path="/login">
+              <Route exact path="/login">
                 <Login />
               </Route>
-              <Route exact path="/edit" component={EditProfile} />
+              <UserDataProvider>
+                <ProtectedRoute exact path="/" component={Profile} />
+                <ProtectedRoute exact path="/profile" component={Profile} />
+                <ProtectedRoute exact path="/edit" component={EditProfile} />
+              </UserDataProvider>
             </Switch>
-          </Router>
-        </AuthProvider>
-      </AppThemeProvider>
+          </AuthProvider>
+        </AppThemeProvider>
+      </Router>
     </>
   );
 }
